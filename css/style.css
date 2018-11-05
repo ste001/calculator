@@ -1,0 +1,23 @@
+.calculator-container{
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(5, auto);
+    grid-template-rows: repeat(5, auto);
+    padding: 3%;
+    background-color: #dadada;
+    margin: 100px 300px;
+    border: 3px double black;
+    border-radius: 5px;
+}
+
+.clear{
+    grid-column: 4 / 6;
+}
+
+.equals{
+    grid-column: 4 / 6;
+}
+
+.calculator-display{
+    grid-column: 1 / 6;
+}
