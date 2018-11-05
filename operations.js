@@ -13,6 +13,10 @@ function multiply(a, b){
 }
 
 function divide (a, b){
+	if (b === 0){
+		alert("Can't divide by zero!");
+		return "Can't divide by zero!";
+	}
     return a / b;
 }
 
@@ -44,6 +48,9 @@ function initListeners(){
 
 	const clear = document.querySelector('.clear');
 	clear.addEventListener('click', clearText);
+
+	const equals = document.querySelector('.equals');
+	equals.addEventListener('click', calculateResult);
 }
 
 function updateText(e){
@@ -51,7 +58,22 @@ function updateText(e){
 	text.value += e.target.value;
 }
 
-function clearText(e){
+function clearText(){
 	let text = document.querySelector('.calculator-display');
 	text.value = "";
+}
+
+function calculateResult(e){
+	let text = document.querySelector('.calculator-display');
+	const expression = text.value;
+	text.value = parseExpression(expression);
+}
+
+/* TODO
+1. Trasformare l'espressione da stringa ad array
+2. Elaborare l'espressione, ricordando l'ordine degli operatori
+3. Ritornare il risultato dell'espressione
+*/
+function parseExpression(expr){
+
 }
