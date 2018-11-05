@@ -19,4 +19,5 @@
 
 .calculator-display{
     grid-column: 1 / 6;
+    font-size: 32px;
 }
