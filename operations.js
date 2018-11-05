@@ -1,3 +1,5 @@
+initListeners();
+
 function add (a, b){
     return a + b;
 }
@@ -31,4 +33,25 @@ function operate(operator, a, b){
 		default:
 			break;
     }
+}
+
+function initListeners(){
+	const numbers = document.querySelectorAll('.number');
+	numbers.forEach(number => number.addEventListener('click', updateText));
+
+	const operations = document.querySelectorAll('.operation');
+	operations.forEach(operation => operation.addEventListener('click', updateText));
+
+	const clear = document.querySelector('.clear');
+	clear.addEventListener('click', clearText);
+}
+
+function updateText(e){
+	let text = document.querySelector('.calculator-display');
+	text.value += e.target.value;
+}
+
+function clearText(e){
+	let text = document.querySelector('.calculator-display');
+	text.value = "";
 }
