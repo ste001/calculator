@@ -1,15 +1,15 @@
 initListeners();
 
 function add (a, b){
-    return (parseInt(a) + parseInt(b)).toString();
+    return (parseFloat(a) + parseFloat(b)).toString();
 }
 
 function subtract(a, b){
-    return (parseInt(a) - parseInt(b)).toString();
+    return (parseFloat(a) - parseFloat(b)).toString();
 }
 
 function multiply(a, b){
-    return a * b;
+    return (Math.round(parseFloat(a) * parseFloat(b)*10)/10).toString();
 }
 
 function divide (a, b){
@@ -17,7 +17,7 @@ function divide (a, b){
 		alert("Can't divide by zero!");
 		return "Can't divide by zero!";
 	}
-    return (Math.round(parseInt(a) / parseInt(b))).toString();
+    return (Math.round(parseFloat(a) / parseFloat(b)*10)/10).toString();
 }
 
 function operate(operator, a, b){
@@ -75,22 +75,23 @@ function calculateResult(e){
 	}
 }
 
-/* TODO
-1. Trasformare l'espressione da stringa ad array
-2. Elaborare l'espressione, ricordando l'ordine degli operatori
-3. Ritornare il risultato dell'espressione
-*/
 function parseExpression(expr){
 	let exprArray = expr.trim().replace(/\s/gi, "")
 			.split("");
 
 	// Metto insieme i numeri di due o più cifre per evitare errori
-	// in fase di calcolo
+	// in fase di calcolo, compresi i decimali
 	for (let i = 0; i < exprArray.length; i++){
 		if ((isNumber(exprArray[i])) && isNumber(exprArray[i-1])){
 			const number = exprArray[i-1] + exprArray[i];
 			exprArray.splice(i-1, 2, number);
 			i = i-1;
+		}
+
+		if (exprArray[i] === '.' && isNumber(exprArray[i-1]) 
+				&& isNumber(exprArray[i+1])){
+			const number = exprArray[i-1] + exprArray[i] + exprArray[i+1];
+			exprArray.splice(i-1, 3, number);			
 		}
 	}
 
@@ -112,7 +113,7 @@ function parseExpression(expr){
 		}
 	}
 
-	return parseInt(exprArray.join(""));
+	return parseFloat(exprArray.join(""));
 }
 
 function isNumber(string){
