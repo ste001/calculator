@@ -1,11 +1,11 @@
 initListeners();
 
 function add (a, b){
-    return a + b;
+    return (parseInt(a) + parseInt(b)).toString();
 }
 
 function subtract(a, b){
-    return a - b;
+    return (parseInt(a) - parseInt(b)).toString();
 }
 
 function multiply(a, b){
@@ -13,30 +13,32 @@ function multiply(a, b){
 }
 
 function divide (a, b){
-	if (b === 0){
+	if (b === '0'){
 		alert("Can't divide by zero!");
 		return "Can't divide by zero!";
 	}
-    return a / b;
+    return (Math.round(parseInt(a) / parseInt(b))).toString();
 }
 
 function operate(operator, a, b){
+	let result = 0;
     switch (operator){
 		case '+':
-			add(a, b);
+			result = add(a, b);
 			break;
 		case '-':
-			subtract(a, b);
+			result = subtract(a, b);
 			break;
 		case '*':
-			multiply(a, b);
+			result = multiply(a, b);
 			break;
 		case '/':
-			divide(a, b);
+			result = divide(a, b);
 			break;
 		default:
 			break;
-    }
+	}
+	return result;
 }
 
 function initListeners(){
@@ -65,8 +67,12 @@ function clearText(){
 
 function calculateResult(e){
 	let text = document.querySelector('.calculator-display');
-	const expression = text.value;
-	text.value = parseExpression(expression);
+	if (text.value === "")
+		return;
+	else {
+		const expression = text.value;
+		text.value = parseExpression(expression);
+	}
 }
 
 /* TODO
@@ -75,5 +81,40 @@ function calculateResult(e){
 3. Ritornare il risultato dell'espressione
 */
 function parseExpression(expr){
+	let exprArray = expr.trim().replace(/\s/gi, "")
+			.split("");
 
+	// Metto insieme i numeri di due o più cifre per evitare errori
+	// in fase di calcolo
+	for (let i = 0; i < exprArray.length; i++){
+		if ((isNumber(exprArray[i])) && isNumber(exprArray[i-1])){
+			const number = exprArray[i-1] + exprArray[i];
+			exprArray.splice(i-1, 2, number);
+			i = i-1;
+		}
+	}
+
+	// Controllo se ci sono * e /, per la precedenza degli operatori
+	for (let i = 0; i < exprArray.length; i++){
+		if (exprArray[i] === '*' || exprArray[i] === '/'){
+			const result = operate(exprArray[i], exprArray[i-1], exprArray[i+1]);
+			exprArray.splice(i-1, 3, result);
+			i = i-1;
+		}
+	}
+
+	// Controllo se ci sono + e -, per la precedenza degli operatori
+	for (let i = 0; i < exprArray.length; i++){
+		if (exprArray[i] === '+' || exprArray[i] === '-'){
+			const result = operate(exprArray[i], exprArray[i-1], exprArray[i+1]);
+			exprArray.splice(i-1, 3, result);
+			i = i-1;
+		}
+	}
+
+	return parseInt(exprArray.join(""));
+}
+
+function isNumber(string){
+	return string >= '0' && string <= '9';
 }
