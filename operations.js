@@ -53,6 +53,9 @@ function initListeners(){
 
 	const equals = document.querySelector('.equals');
 	equals.addEventListener('click', calculateResult);
+
+	const backspace = document.querySelector('.backspace');
+	backspace.addEventListener('click', removeElement);
 }
 
 function updateText(e){
@@ -73,6 +76,13 @@ function calculateResult(e){
 		const expression = text.value;
 		text.value = parseExpression(expression);
 	}
+}
+
+function removeElement(e){
+	let text = document.querySelector('.calculator-display');
+	if (text.value === "")
+		return;
+	text.value = text.value.substring(0, text.value.length - 1);
 }
 
 function parseExpression(expr){
